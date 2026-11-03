@@ -6,7 +6,7 @@ window.BAKERY_DATA = {
   bakeryName: "Corner Loaf Bakery",
   headline: "Fresh bread baked every morning",
   hours: null,
-  version: "v1.0.0",
+  version: "v1.1.1",
   tiles: [
     { id: 1, title: "Start on localhost", state: "done" },
     { id: 2, title: "First commit", state: "done" },
@@ -16,8 +16,8 @@ window.BAKERY_DATA = {
     { id: 6, title: "Protect main", state: "done" },
     { id: 7, title: "Tag v1.0.0", state: "done" },
     { id: 8, title: "Release v1.1.0 with a typo", state: "done" },
-    { id: 9, title: "Revert", state: "in-progress" },
-    { id: 10, title: "Release v1.1.1", state: "not-started" },
+    { id: 9, title: "Revert", state: "done" },
+    { id: 10, title: "Release v1.1.1", state: "in-progress" },
     { id: 11, title: "Settings file and .gitignore", state: "not-started" },
     { id: 12, title: "AI change on a branch", state: "not-started" }
   ]
