@@ -17,8 +17,8 @@ window.BAKERY_DATA = {
     { id: 7, title: "Tag v1.0.0", state: "done" },
     { id: 8, title: "Release v1.1.0 with a typo", state: "done" },
     { id: 9, title: "Revert", state: "done" },
-    { id: 10, title: "Release v1.1.1", state: "in-progress" },
-    { id: 11, title: "Settings file and .gitignore", state: "not-started" },
-    { id: 12, title: "AI change on a branch", state: "not-started" }
+    { id: 10, title: "Release v1.1.1", state: "done" },
+    { id: 11, title: "Settings file and .gitignore", state: "done" },
+    { id: 12, title: "AI change on a branch", state: "in-progress" }
   ]
 };
