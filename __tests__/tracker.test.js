@@ -180,3 +180,14 @@ test('Local notes: rules.md is gitignored and untracked', () => {
   assert.ok(isIgnored('rules.md'), 'rules.md must be gitignored');
   assert.ok(!isTracked('rules.md'));
 });
+
+test('Accessibility: each page has a skip link that targets the main content', () => {
+  for (const f of ['index.html', 'tracker.html']) {
+    const html = read(f);
+    assert.ok(/<a class="skip" href="#main">Skip to content<\/a>/.test(html), `${f}: skip link`);
+    assert.ok(/<main[^>]* id="main"/.test(html), `${f}: main#main`);
+    assert.ok(html.indexOf('class="skip"') < html.indexOf('<nav'), `${f}: skip link comes first`);
+  }
+  const css = read('styles.css');
+  assert.ok(/\.skip\s*\{/.test(css) && /\.skip:focus/.test(css), 'skip link hidden until focused');
+});

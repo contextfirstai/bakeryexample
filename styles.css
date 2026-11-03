@@ -22,6 +22,9 @@ body {
 h1, .tile-title, .bakery-name {
   font-family: Montserrat, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 16px; top: 16px; z-index: 10; padding: 8px 12px; background: var(--context-blue); color: #0B1220; border-radius: 6px; }
+
 .nav { display: flex; gap: 24px; padding: 16px 24px; border-bottom: 1px solid #2E3036; font-size: 1.1rem; }
 .nav a { color: var(--muted); text-decoration: none; padding-bottom: 2px; }
 .nav a:hover, .nav a:focus-visible { color: var(--text); }
