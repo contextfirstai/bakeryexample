@@ -19,6 +19,6 @@ window.BAKERY_DATA = {
     { id: 9, title: "Revert", state: "done" },
     { id: 10, title: "Release v1.1.1", state: "done" },
     { id: 11, title: "Settings file and .gitignore", state: "done" },
-    { id: 12, title: "AI change on a branch", state: "in-progress" }
+    { id: 12, title: "AI change on a branch", state: "done" }
   ]
 };

@@ -44,11 +44,13 @@ test('PRD s5: tile titles match the 12 steps', () => {
   ]);
 });
 
-test('REQ-TRK-002: every tile has one of three valid states; 1..3 in progress', () => {
+test('REQ-TRK-002: every tile has one of three valid states; up to 3 in progress', () => {
   const { tiles } = loadData();
   tiles.forEach((t) => assert.ok(STATES.includes(t.state), `tile ${t.id}: ${t.state}`));
   const n = tiles.filter((t) => t.state === 'in-progress').length;
-  assert.ok(n >= 1 && n <= 3);
+  assert.ok(n <= 3, 'at most 3 tiles in progress');
+  // none in progress is valid only once the whole build is finished
+  if (n === 0) assert.ok(tiles.every((t) => t.state === 'done'), 'nothing in progress but not all done');
 });
 
 test('REQ-TRK-002: stateLabel gives text label for each state (accessibility)', () => {
@@ -86,13 +88,12 @@ test('REQ-TRK-006: hoursLine empty when absent, shown when present', () => {
   assert.strictEqual(tracker.versionLabel({ version: 'v1.0.0' }), 'v1.0.0');
 });
 
-test('PRD s4: data = current build state (steps 1-11 done, step 12 in progress, hours reverted, v1.1.1)', () => {
+test('PRD s4: data = current build state (all 12 steps done, hours reverted, v1.1.1)', () => {
   const d = loadData();
   assert.strictEqual(d.headline, 'Fresh bread baked every morning');
   assert.strictEqual(d.hours, null);
   assert.strictEqual(d.version, 'v1.1.1');
-  assert.ok(d.tiles.slice(0, 11).every((t) => t.state === 'done'));
-  assert.strictEqual(d.tiles[11].state, 'in-progress');
+  assert.ok(d.tiles.every((t) => t.state === 'done'));
 });
 
 test('REQ-TRK-007: works offline, no external network references, no framework', () => {
