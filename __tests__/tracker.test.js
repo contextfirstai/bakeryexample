@@ -4,8 +4,12 @@ const assert = require('node:assert');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const { execFileSync, spawnSync } = require('node:child_process');
 
 const root = path.join(__dirname, '..');
+// A real secrets file may exist locally; the rule is that Git ignores it and never tracks it.
+const isIgnored = (f) => spawnSync('git', ['check-ignore', '-q', f], { cwd: root }).status === 0;
+const isTracked = (f) => execFileSync('git', ['ls-files', f], { cwd: root, encoding: 'utf8' }).trim() !== '';
 const read = (f) => fs.readFileSync(path.join(root, f), 'utf8');
 
 function loadData() {
@@ -127,8 +131,11 @@ test('Safety: .gitignore blocks real settings/env; example is blank and tracked'
   }
   const ex = JSON.parse(read('settings.example.json'));
   Object.values(ex).forEach((v) => assert.strictEqual(v, ''));
-  assert.ok(!fs.existsSync(path.join(root, 'settings.json')));
-  assert.ok(!fs.existsSync(path.join(root, '.env')));
+  for (const f of ['.env', '.env.local', 'settings.json']) {
+    assert.ok(isIgnored(f), `${f} must be gitignored`);
+    assert.ok(!isTracked(f), `${f} must not be tracked`);
+  }
+  assert.ok(!isIgnored('.env.example') && !isIgnored('settings.example.json'));
 });
 
 test('Pages: home is the bakery hero, tracker has the 12 stages on its own page', () => {
@@ -148,4 +155,24 @@ test('render() tolerates a page that only has some elements', () => {
   const doc = { getElementById: (id) => nodes[id] || null, createElement: () => { throw new Error('no tiles page'); } };
   tracker.render({ bakeryName: 'B', headline: 'H', hours: null, version: null, tiles: [] }, doc);
   assert.strictEqual(nodes.headline.textContent, 'H');
+});
+
+test('Step 11: .env.example lists blank scheduling and email placeholders; real .env stays ignored', () => {
+  const lines = read('.env.example').split('\n').filter((l) => l && !l.startsWith('#'));
+  const vars = Object.fromEntries(lines.map((l) => l.split('=')));
+  const keys = Object.keys(vars);
+  for (const k of ['SCHEDULING_API_URL', 'SCHEDULING_API_KEY', 'EMAIL_SMTP_HOST', 'EMAIL_SMTP_PORT',
+    'EMAIL_SMTP_USER', 'EMAIL_SMTP_PASSWORD', 'EMAIL_FROM_ADDRESS']) {
+    assert.ok(keys.includes(k), `${k} missing`);
+  }
+  Object.entries(vars).forEach(([k, v]) => assert.strictEqual(v, '', `${k} must be blank`));
+  const gi = read('.gitignore').split('\n');
+  assert.ok(gi.includes('.env') && gi.includes('.env.*') && gi.includes('!.env.example'));
+  assert.ok(isIgnored('.env') && !isTracked('.env'));
+});
+
+test('Step 11: settings.example.json has the same keys as .env.example, all blank', () => {
+  const envKeys = read('.env.example').split('\n').filter((l) => l && !l.startsWith('#')).map((l) => l.split('=')[0]);
+  const settings = JSON.parse(read('settings.example.json'));
+  assert.deepStrictEqual(Object.keys(settings).sort(), [...envKeys].sort());
 });

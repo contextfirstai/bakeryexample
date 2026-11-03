@@ -22,7 +22,8 @@ then visit http://localhost:8000.
 | `styles.css` | Look and feel (dark page, tile colours) |
 | `data.js` | The one data file: tile states, version, headline, hours |
 | `tracker.js` | Tiny script that draws the page from `data.js` |
-| `settings.example.json` | Blank template for step 11. Copy to `settings.json` (ignored by Git) |
+| `.env.example` | Blank placeholders for the scheduling and email integrations. Copy to `.env` (ignored by Git) |
+| `settings.example.json` | The same placeholders as JSON. Copy to `settings.json` (ignored by Git) |
 | `.gitignore` | Keeps real settings and `.env` files out of the repository |
 
 ## Changing a tile
