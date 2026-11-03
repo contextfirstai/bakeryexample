@@ -82,14 +82,14 @@ test('REQ-TRK-006: hoursLine empty when absent, shown when present', () => {
   assert.strictEqual(tracker.versionLabel({ version: 'v1.0.0' }), 'v1.0.0');
 });
 
-test('PRD s4: data = current build state (steps 1-5 done, step 6 in progress)', () => {
+test('PRD s4: data = current build state (steps 1-6 done, step 7 in progress)', () => {
   const d = loadData();
   assert.strictEqual(d.headline, 'Fresh bread baked every morning');
   assert.strictEqual(d.hours, null);
   assert.strictEqual(d.version, null);
-  assert.ok(d.tiles.slice(0, 5).every((t) => t.state === 'done'));
-  assert.strictEqual(d.tiles[5].state, 'in-progress');
-  assert.ok(d.tiles.slice(6).every((t) => t.state === 'not-started'));
+  assert.ok(d.tiles.slice(0, 6).every((t) => t.state === 'done'));
+  assert.strictEqual(d.tiles[6].state, 'in-progress');
+  assert.ok(d.tiles.slice(7).every((t) => t.state === 'not-started'));
 });
 
 test('REQ-TRK-007: works offline, no external network references, no framework', () => {
