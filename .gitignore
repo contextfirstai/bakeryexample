@@ -13,3 +13,6 @@ __pycache__/
 .venv/
 dist/
 .DS_Store
+
+# Local notes
+rules.md
