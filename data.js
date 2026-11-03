@@ -4,15 +4,15 @@
 // tile state: "not-started" | "in-progress" | "done"
 window.BAKERY_DATA = {
   bakeryName: "Corner Loaf Bakery",
-  headline: "Fresh bread every morning",
+  headline: "Fresh bread baked every morning",
   hours: null,
   version: null,
   tiles: [
     { id: 1, title: "Start on localhost", state: "done" },
     { id: 2, title: "First commit", state: "done" },
     { id: 3, title: "Push to GitHub", state: "done" },
-    { id: 4, title: "Branch and pull request", state: "in-progress" },
-    { id: 5, title: "Merge", state: "not-started" },
+    { id: 4, title: "Branch and pull request", state: "done" },
+    { id: 5, title: "Merge", state: "in-progress" },
     { id: 6, title: "Protect main", state: "not-started" },
     { id: 7, title: "Tag v1.0.0", state: "not-started" },
     { id: 8, title: "Release v1.1.0 with a typo", state: "not-started" },
