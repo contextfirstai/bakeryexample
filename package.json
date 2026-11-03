@@ -1,0 +1,10 @@
+{
+  "name": "bakery-app",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Context Clinic 03 bakery app and live build tracker (dev tooling only; the app itself needs no install)",
+  "scripts": {
+    "test": "node --test __tests__/tracker.test.js",
+    "serve": "python3 -m http.server 8000"
+  }
+}

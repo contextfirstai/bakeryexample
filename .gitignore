@@ -1,0 +1,15 @@
+# Secrets: never commit real values. Only the example templates are tracked.
+.env
+.env.*
+!.env.example
+settings.json
+!settings.example.json
+*.pem
+*.key
+
+# Tooling and OS
+node_modules/
+__pycache__/
+.venv/
+dist/
+.DS_Store

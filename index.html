@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bakery App and Build Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="tracker" aria-label="Build progress tracker">
+    <div class="tracker-top">
+      <p id="key" class="key"></p>
+      <p id="counter" class="counter" aria-live="polite"></p>
+    </div>
+    <ol id="tiles" class="tiles"></ol>
+  </header>
+
+  <main class="bakery">
+    <p id="bakery-name" class="bakery-name"></p>
+    <h1 id="headline"></h1>
+    <p id="hours" class="hours" hidden></p>
+    <p class="release">Current release: <span id="version"></span></p>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="tracker.js"></script>
+  <script>Tracker.render(window.BAKERY_DATA);</script>
+</body>
+</html>
