@@ -176,3 +176,8 @@ test('Step 11: settings.example.json has the same keys as .env.example, all blan
   const settings = JSON.parse(read('settings.example.json'));
   assert.deepStrictEqual(Object.keys(settings).sort(), [...envKeys].sort());
 });
+
+test('Local notes: rules.md is gitignored and untracked', () => {
+  assert.ok(isIgnored('rules.md'), 'rules.md must be gitignored');
+  assert.ok(!isTracked('rules.md'));
+});
