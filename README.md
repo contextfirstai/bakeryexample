@@ -1,6 +1,6 @@
 # Bakery App and Live Build Tracker
 
-A one-page site for a small bakery, with a 12-tile progress tracker across the top.
+A small bakery site: a hero home page, plus a separate page showing the 12-stage build tracker.
 It is the single example for Context Clinic 03. Each tile changes colour through a real commit.
 
 Built from PRD CFAI-CLC-TRK-PRD-001 v1.1. No backend, no database, no secrets.
@@ -17,7 +17,8 @@ then visit http://localhost:8000.
 
 | File | Job |
 | --- | --- |
-| `index.html` | The page |
+| `index.html` | Home page: the bakery hero (headline, hours, release) |
+| `tracker.html` | The 12 build stages, key and progress counter |
 | `styles.css` | Look and feel (dark page, tile colours) |
 | `data.js` | The one data file: tile states, version, headline, hours |
 | `tracker.js` | Tiny script that draws the page from `data.js` |

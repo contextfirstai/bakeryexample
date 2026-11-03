@@ -3,19 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bakery App and Build Tracker</title>
+  <title>Bakery App</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="tracker" aria-label="Build progress tracker">
-    <div class="tracker-top">
-      <p id="key" class="key"></p>
-      <p id="counter" class="counter" aria-live="polite"></p>
-    </div>
-    <ol id="tiles" class="tiles"></ol>
-  </header>
+  <nav class="nav" aria-label="Main">
+    <a href="index.html" aria-current="page">Bakery</a>
+    <a href="tracker.html">Build tracker</a>
+  </nav>
 
-  <main class="bakery">
+  <main class="hero">
     <p id="bakery-name" class="bakery-name"></p>
     <h1 id="headline"></h1>
     <p id="hours" class="hours" hidden></p>

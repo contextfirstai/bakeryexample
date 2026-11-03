@@ -21,18 +21,25 @@
     return n;
   }
 
+  function setText(doc, id, text) {
+    var n = doc.getElementById(id);
+    if (n) n.textContent = text;
+    return n;
+  }
+
+  // Each page has only some of these elements; fill whichever exist.
   function render(data, doc) {
     doc = doc || document;
-    doc.getElementById("bakery-name").textContent = data.bakeryName;
-    doc.getElementById("headline").textContent = data.headline;
-    var hours = doc.getElementById("hours");
-    hours.textContent = hoursLine(data);
-    hours.hidden = !hoursLine(data);
-    doc.getElementById("version").textContent = versionLabel(data);
-    doc.getElementById("key").textContent = KEY_TEXT;
-    doc.getElementById("counter").textContent = counterText(data.tiles);
+    setText(doc, "bakery-name", data.bakeryName);
+    setText(doc, "headline", data.headline);
+    var hours = setText(doc, "hours", hoursLine(data));
+    if (hours) hours.hidden = !hoursLine(data);
+    setText(doc, "version", versionLabel(data));
+    setText(doc, "key", KEY_TEXT);
+    setText(doc, "counter", counterText(data.tiles));
 
     var grid = doc.getElementById("tiles");
+    if (!grid) return;
     grid.textContent = "";
     data.tiles.forEach(function (t) {
       var tile = el("li", "tile " + t.state);

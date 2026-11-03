@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Build Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="nav" aria-label="Main">
+    <a href="index.html">Bakery</a>
+    <a href="tracker.html" aria-current="page">Build tracker</a>
+  </nav>
+
+  <main class="tracker" aria-label="Build progress tracker">
+    <div class="tracker-top">
+      <p id="key" class="key"></p>
+      <p id="counter" class="counter" aria-live="polite"></p>
+    </div>
+    <ol id="tiles" class="tiles"></ol>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="tracker.js"></script>
+  <script>Tracker.render(window.BAKERY_DATA);</script>
+</body>
+</html>

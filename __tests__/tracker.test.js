@@ -17,7 +17,7 @@ const tracker = require('../tracker.js');
 const STATES = ['not-started', 'in-progress', 'done'];
 
 test('structure: simplicity files exist (PRD s7, s8)', () => {
-  for (const f of ['index.html', 'styles.css', 'data.js', 'README.md', '.gitignore', 'settings.example.json']) {
+  for (const f of ['index.html', 'tracker.html', 'styles.css', 'data.js', 'README.md', '.gitignore', 'settings.example.json']) {
     assert.ok(fs.existsSync(path.join(root, f)), `${f} missing`);
   }
 });
@@ -56,7 +56,7 @@ test('REQ-TRK-002: stateLabel gives text label for each state (accessibility)', 
 
 test('REQ-TRK-003: key text is exact', () => {
   assert.strictEqual(tracker.KEY_TEXT, 'Grey: not started. Blue: in progress. Green: done.');
-  assert.ok(read('index.html').includes('id="key"'));
+  assert.ok(read('tracker.html').includes('id="key"'));
 });
 
 test('REQ-TRK-004: counter derived from tiles', () => {
@@ -66,10 +66,12 @@ test('REQ-TRK-004: counter derived from tiles', () => {
 });
 
 test('REQ-TRK-005: page reads data file, no hard-coded bakery text/state in HTML', () => {
-  const html = read('index.html');
-  assert.ok(html.includes('data.js'));
-  assert.ok(!/Fresh bread/.test(html));
-  assert.ok(!/Open daly/.test(html));
+  for (const f of ['index.html', 'tracker.html']) {
+    const html = read(f);
+    assert.ok(html.includes('data.js'), f);
+    assert.ok(!/Fresh bread/.test(html), f);
+    assert.ok(!/Open daly/.test(html), f);
+  }
 });
 
 test('REQ-TRK-006: hoursLine empty when absent, shown when present', () => {
@@ -91,7 +93,7 @@ test('PRD s4: data = current build state (steps 1-3 done, step 4 in progress)', 
 });
 
 test('REQ-TRK-007: works offline, no external network references, no framework', () => {
-  const all = ['index.html', 'styles.css', 'data.js', 'tracker.js'].map(read).join('\n');
+  const all = ['index.html', 'tracker.html', 'styles.css', 'data.js', 'tracker.js'].map(read).join('\n');
   assert.ok(!/https?:\/\//.test(all), 'external URL found');
   assert.ok(!/fetch\(|XMLHttpRequest/.test(all), 'fetch breaks file:// use');
 });
@@ -127,4 +129,23 @@ test('Safety: .gitignore blocks real settings/env; example is blank and tracked'
   Object.values(ex).forEach((v) => assert.strictEqual(v, ''));
   assert.ok(!fs.existsSync(path.join(root, 'settings.json')));
   assert.ok(!fs.existsSync(path.join(root, '.env')));
+});
+
+test('Pages: home is the bakery hero, tracker has the 12 stages on its own page', () => {
+  const home = read('index.html'), trk = read('tracker.html');
+  for (const id of ['headline', 'hours', 'version', 'bakery-name']) assert.ok(home.includes(`id="${id}"`), `home ${id}`);
+  for (const id of ['tiles', 'key', 'counter']) {
+    assert.ok(trk.includes(`id="${id}"`), `tracker ${id}`);
+    assert.ok(!home.includes(`id="${id}"`), `home must not have ${id}`);
+  }
+  assert.ok(!trk.includes('id="headline"'));
+  assert.ok(home.includes('href="tracker.html"'), 'home links to tracker');
+  assert.ok(trk.includes('href="index.html"'), 'tracker links home');
+});
+
+test('render() tolerates a page that only has some elements', () => {
+  const nodes = { headline: { textContent: '' } };
+  const doc = { getElementById: (id) => nodes[id] || null, createElement: () => { throw new Error('no tiles page'); } };
+  tracker.render({ bakeryName: 'B', headline: 'H', hours: null, version: null, tiles: [] }, doc);
+  assert.strictEqual(nodes.headline.textContent, 'H');
 });
