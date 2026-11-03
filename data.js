@@ -9,9 +9,9 @@ window.BAKERY_DATA = {
   version: null,
   tiles: [
     { id: 1, title: "Start on localhost", state: "done" },
-    { id: 2, title: "First commit", state: "in-progress" },
-    { id: 3, title: "Push to GitHub", state: "not-started" },
-    { id: 4, title: "Branch and pull request", state: "not-started" },
+    { id: 2, title: "First commit", state: "done" },
+    { id: 3, title: "Push to GitHub", state: "done" },
+    { id: 4, title: "Branch and pull request", state: "in-progress" },
     { id: 5, title: "Merge", state: "not-started" },
     { id: 6, title: "Protect main", state: "not-started" },
     { id: 7, title: "Tag v1.0.0", state: "not-started" },
