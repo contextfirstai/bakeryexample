@@ -5,8 +5,8 @@
 window.BAKERY_DATA = {
   bakeryName: "Corner Loaf Bakery",
   headline: "Fresh bread baked every morning",
-  hours: "Open daly from 7am",
-  version: "v1.1.0",
+  hours: null,
+  version: "v1.0.0",
   tiles: [
     { id: 1, title: "Start on localhost", state: "done" },
     { id: 2, title: "First commit", state: "done" },

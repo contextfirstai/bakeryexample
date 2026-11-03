@@ -82,11 +82,11 @@ test('REQ-TRK-006: hoursLine empty when absent, shown when present', () => {
   assert.strictEqual(tracker.versionLabel({ version: 'v1.0.0' }), 'v1.0.0');
 });
 
-test('PRD s4: data = current build state (steps 1-8 done, step 9 in progress, hours line with typo, v1.1.0)', () => {
+test('PRD s4: data = current build state (steps 1-8 done, step 9 in progress, hours reverted, v1.0.0)', () => {
   const d = loadData();
   assert.strictEqual(d.headline, 'Fresh bread baked every morning');
-  assert.strictEqual(d.hours, 'Open daly from 7am'); // deliberate typo (REQ-TRK-008)
-  assert.strictEqual(d.version, 'v1.1.0');
+  assert.strictEqual(d.hours, null);
+  assert.strictEqual(d.version, 'v1.0.0');
   assert.ok(d.tiles.slice(0, 8).every((t) => t.state === 'done'));
   assert.strictEqual(d.tiles[8].state, 'in-progress');
   assert.ok(d.tiles.slice(9).every((t) => t.state === 'not-started'));
