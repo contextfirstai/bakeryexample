@@ -149,3 +149,23 @@ test('render() tolerates a page that only has some elements', () => {
   tracker.render({ bakeryName: 'B', headline: 'H', hours: null, version: null, tiles: [] }, doc);
   assert.strictEqual(nodes.headline.textContent, 'H');
 });
+
+test('Step 11: .env.example lists blank scheduling and email placeholders; real .env stays ignored', () => {
+  const lines = read('.env.example').split('\n').filter((l) => l && !l.startsWith('#'));
+  const vars = Object.fromEntries(lines.map((l) => l.split('=')));
+  const keys = Object.keys(vars);
+  for (const k of ['SCHEDULING_API_URL', 'SCHEDULING_API_KEY', 'EMAIL_SMTP_HOST', 'EMAIL_SMTP_PORT',
+    'EMAIL_SMTP_USER', 'EMAIL_SMTP_PASSWORD', 'EMAIL_FROM_ADDRESS']) {
+    assert.ok(keys.includes(k), `${k} missing`);
+  }
+  Object.entries(vars).forEach(([k, v]) => assert.strictEqual(v, '', `${k} must be blank`));
+  const gi = read('.gitignore').split('\n');
+  assert.ok(gi.includes('.env') && gi.includes('.env.*') && gi.includes('!.env.example'));
+  assert.ok(!fs.existsSync(path.join(root, '.env')));
+});
+
+test('Step 11: settings.example.json has the same keys as .env.example, all blank', () => {
+  const envKeys = read('.env.example').split('\n').filter((l) => l && !l.startsWith('#')).map((l) => l.split('=')[0]);
+  const settings = JSON.parse(read('settings.example.json'));
+  assert.deepStrictEqual(Object.keys(settings).sort(), [...envKeys].sort());
+});
