@@ -44,11 +44,13 @@ test('PRD s5: tile titles match the 12 steps', () => {
   ]);
 });
 
-test('REQ-TRK-002: every tile has one of three valid states; 1..3 in progress', () => {
+test('REQ-TRK-002: every tile has one of three valid states; up to 3 in progress', () => {
   const { tiles } = loadData();
   tiles.forEach((t) => assert.ok(STATES.includes(t.state), `tile ${t.id}: ${t.state}`));
   const n = tiles.filter((t) => t.state === 'in-progress').length;
-  assert.ok(n >= 1 && n <= 3);
+  assert.ok(n <= 3, 'at most 3 tiles in progress');
+  // none in progress is valid only once the whole build is finished
+  if (n === 0) assert.ok(tiles.every((t) => t.state === 'done'), 'nothing in progress but not all done');
 });
 
 test('REQ-TRK-002: stateLabel gives text label for each state (accessibility)', () => {
