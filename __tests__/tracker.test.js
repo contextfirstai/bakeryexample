@@ -4,8 +4,12 @@ const assert = require('node:assert');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const { execFileSync, spawnSync } = require('node:child_process');
 
 const root = path.join(__dirname, '..');
+// A real secrets file may exist locally; the rule is that Git ignores it and never tracks it.
+const isIgnored = (f) => spawnSync('git', ['check-ignore', '-q', f], { cwd: root }).status === 0;
+const isTracked = (f) => execFileSync('git', ['ls-files', f], { cwd: root, encoding: 'utf8' }).trim() !== '';
 const read = (f) => fs.readFileSync(path.join(root, f), 'utf8');
 
 function loadData() {
@@ -127,8 +131,11 @@ test('Safety: .gitignore blocks real settings/env; example is blank and tracked'
   }
   const ex = JSON.parse(read('settings.example.json'));
   Object.values(ex).forEach((v) => assert.strictEqual(v, ''));
-  assert.ok(!fs.existsSync(path.join(root, 'settings.json')));
-  assert.ok(!fs.existsSync(path.join(root, '.env')));
+  for (const f of ['.env', '.env.local', 'settings.json']) {
+    assert.ok(isIgnored(f), `${f} must be gitignored`);
+    assert.ok(!isTracked(f), `${f} must not be tracked`);
+  }
+  assert.ok(!isIgnored('.env.example') && !isIgnored('settings.example.json'));
 });
 
 test('Pages: home is the bakery hero, tracker has the 12 stages on its own page', () => {
@@ -161,7 +168,7 @@ test('Step 11: .env.example lists blank scheduling and email placeholders; real 
   Object.entries(vars).forEach(([k, v]) => assert.strictEqual(v, '', `${k} must be blank`));
   const gi = read('.gitignore').split('\n');
   assert.ok(gi.includes('.env') && gi.includes('.env.*') && gi.includes('!.env.example'));
-  assert.ok(!fs.existsSync(path.join(root, '.env')));
+  assert.ok(isIgnored('.env') && !isTracked('.env'));
 });
 
 test('Step 11: settings.example.json has the same keys as .env.example, all blank', () => {
